@@ -14,11 +14,19 @@ struct graf {
 	int size;
 };
 
+struct qeuestr {
+	int numb;
+	qeuestr* next;
+};
+
 void Bfg9000_matrix(int** arr, int size, int* versh, int num ){
+	clock_t start, end;
+	
 	int i;
 	queue <int> q;
 	versh[num] = 1;
 	q.push(num);
+	start = clock();
 	while(!q.empty()){
 		i = q.front();
 		q.pop();
@@ -30,6 +38,9 @@ void Bfg9000_matrix(int** arr, int size, int* versh, int num ){
 		}
 	}
 }
+	end = clock();
+	double time = difftime(end, start) / CLOCKS_PER_SEC;
+	cout << endl << time << endl;
 }
 
 void Bfg9000_spisok(graf* grafon, int size, int* versh, int num ){
@@ -54,6 +65,40 @@ void Bfg9000_spisok(graf* grafon, int size, int* versh, int num ){
 	}
 }
 
+void spisok_q(int** arr, int size, int* versh, int num) {
+	int i;
+	clock_t start, end;
+	qeuestr* create;
+	qeuestr* buf;
+	qeuestr* head = new qeuestr;
+	versh[num] = 1;
+	head->numb = num;
+	head->next = NULL;
+	start = clock();
+	while (head != NULL) {
+		i = head->numb;
+		cout << " " << i << "-> ";
+		for (int j = 0; j < size; j++) {
+			if (arr[i][j] == 1 && versh[j] == 0) {
+				qeuestr* create = new qeuestr;
+				create->numb = j;
+				create->next = NULL;
+				buf = head;
+				while (buf->next != NULL) {
+					buf = buf->next;
+				}
+				buf->next = create;
+				versh[j] = 1;
+			}
+		}
+		buf = head->next;
+		delete(head);
+		head = buf;
+	}
+	end = clock();
+	double time = difftime(end, start) / CLOCKS_PER_SEC;
+	cout << endl << time << endl;
+}
 
 graf* sozdat(int versh) {
 
@@ -170,6 +215,17 @@ cin >> num;
 for (int i = 0; i < size; i++)
 	versh[i] = 0;
 Bfg9000_spisok(grafon, size, versh, num);
+
+
+cout << endl << endl << "   ќбход в глубину c очередью составленной списками" << endl;
+cout << "   ¬ведите номер вершины, с которой хотите начать обход: ";
+num = 0;
+cin >> num;
+for (int i = 0; i < size; i++)
+	versh[i] = 0;
+spisok_q(arr, size, versh, num);
+
+
 
 system("pause");
 }
