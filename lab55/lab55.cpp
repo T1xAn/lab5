@@ -68,10 +68,12 @@ void push(quqech* que, int index) {
 	que->size++;
 }
 void pop(quqech* que) {
-	que_node* temp = que->front;
-	que->front = que->front->next;
-	que->size--;
-	delete(temp);
+	if (que->size){
+		que_node* temp = que->front;
+		que->front = que->front->next;
+		que->size--;
+		delete(temp);
+	}
 }
 
 void Bfg9000_matrix(int** a, int num, int* versh, int size) {
