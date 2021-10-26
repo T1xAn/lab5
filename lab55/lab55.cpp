@@ -130,6 +130,27 @@ void fuck_you_leatherman(int** a, int num, int* versh, int size) {
 	}
 }
 
+void leather_club_is_two_blocks_down(int** a, int num, int* versh, int size) {
+	int* gym_lockers;
+	int last_boy_next_door = 0;
+	gym_lockers = (int*)malloc(sizeof(int) * size);
+	versh[num] = 1;
+	gym_lockers[0] = num;
+	while (last_boy_next_door+1) {
+		num = gym_lockers[0];
+		cout << num << " -> ";
+		gym_lockers = &gym_lockers[1];
+		last_boy_next_door--;
+		for (int i = 0; i < size; i++) {
+			if (a[num][i] == 1 && versh[i] != 1) {
+				last_boy_next_door++;
+				gym_lockers[last_boy_next_door] = i;
+				versh[i] = 1;
+			}
+		}
+	}
+}
+
 void addgran(graf* grafon, int from, int to) {
 	node* newnode = sozdatnode(from);
 	if (grafon->nodes[to] == 0) {
@@ -249,6 +270,20 @@ void main(){
 	cout << endl << "   ";
 	start = clock();
 	fuck_you_leatherman(arr, num, versh, size);
+	end = clock();
+	cout << endl << endl << "   Время выполнения с очередью списком " << (double)difftime(end, start) / CLOCKS_PER_SEC << endl << endl << "   ";
+
+	system("pause");
+
+	cout << endl << endl << "-----------------------------------------------------------" << endl;
+	cout << "   Обход в глубину c очередью составленной массивом" << endl;
+
+	for (int i = 0; i < size; i++)
+		versh[i] = 0;
+
+	cout << endl << "   ";
+	start = clock();
+	leather_club_is_two_blocks_down(arr, num, versh, size);
 	end = clock();
 	cout << endl << endl << "   Время выполнения с очередью списком " << (double)difftime(end, start) / CLOCKS_PER_SEC << endl << endl << "   ";
 
